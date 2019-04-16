@@ -1,0 +1,34 @@
+block content
+  h3= title
+  form#form_add_task(name="addtask", method="post", action="/addtask")
+    span Task Name
+    span &nbsp;
+    input#input_name(type="text", placeholder="task", name="task")
+    br
+    br
+    span priority
+    span &nbsp;
+    input#input_priority(type="text", placeholder="priority", name="priority")
+    br
+    br
+    span City
+    span &nbsp;
+    input#input_city(type="text", placeholder="city", name="city")
+    br
+    br
+    span State
+    span &nbsp;
+    input#input_state(type="text", placeholder="state", name="state")
+    br
+    br
+    span Sex
+    span &nbsp;
+    input#input_sex(type="text", placeholder="sex", name="sex")
+    br
+    br
+    span GPA
+    span &nbsp;
+    input#input_gpa(type="text", placeholder="gpa", name="gpa")
+    br
+    br
+    button#submit_task(type="submit") submit

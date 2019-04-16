@@ -1,0 +1,36 @@
+extends layout
+link(href='../public/stylesheets/style.css', rel = 'stylesheet')
+link(href='../public/stylesheets/w3.css', rel = 'stylesheet' )
+
+block content
+  h3.
+    Tasks
+  ul
+  each tasks, i in trackerlist
+    li#student_list_item
+      a(href='#') #{tasks.name} will take #{tasks.time[0]} hours and #{tasks.time[1]} minutes
+
+  div
+    table(class="w3-table-all w3-hoverable")
+      thead
+        tr: th Tasks
+      tbody
+        tr
+          td(class="headers")
+            x Task Name
+          td(class="headers")
+            x Hours
+          td(class="headers")
+            x Minutes
+          td(class="headers", style="")
+            x Priority
+        each task, i in trackerlist
+          tr
+            td
+              x #{task.name}
+            td
+              x #{task.time[0]}
+            td
+              x #{task.time[1]}
+            td
+              x #{task.priority}
