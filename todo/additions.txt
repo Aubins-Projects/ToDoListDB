@@ -1,0 +1,5 @@
+Ability to sort by
+    the priority level
+    the due Date
+Enable Editing
+Enable Removing

@@ -3,3 +3,7 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  
+  form#form_add_task(name="verifyuser", method="post", action="/verifyuser")
+    input#input_user(type="text", placeholder="user", name="user")
+    button#submit_task(type="submit") submit

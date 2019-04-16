@@ -1,0 +1,67 @@
+extends layout
+
+block content
+  h3= title
+  form#form_add_task(name="edittask", method="post", action="/changetask")
+    span Task Name
+    span &nbsp;
+    input#input_name(type="text", placeholder=edittask[0].name,value=edittask[0].name, name="task")
+    br
+    br
+    span Priority
+    span &nbsp;
+    input#input_priority(type="number", placeholder=edittask[0].priority,value=edittask[0].priority, name="priority")
+    br
+    br
+    span Hours
+    span &nbsp;
+    input#input_hours(type="number", placeholder=edittask[0].time[0],value=edittask[0].time[0], name="hours")
+    br
+    br
+    span Minutes
+    span &nbsp;
+    input#input_minutes(type="number", placeholder=edittask[0].time[1],value=edittask[0].time[1], name="minutes")
+    br
+    br
+    span Subtask
+    span &nbsp;
+    input#input_subtask(type="checkbox", placeholder=edittask[0].subtask,value=edittask[0].subtask, name="subtask")
+    br
+    br
+    span Due Date
+    br
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span Old Due Date:  
+    span &nbsp;
+    span #{edittask[0].duedate}
+    br
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    span &nbsp;
+    input#input_duedate(type="date", placeholder=edittask[0].duedate, value=edittask[0].duedate, name="duedate")
+    br
+    br
+    span User
+    span &nbsp;
+    input#input_user(type="text", placeholder=edittask[0].user,value=edittask[0].user, name="user")
+    input#input_user(type="hidden", name="_id", value=edittask[0]._id)
+    br
+    br
+    button#submit_task(type="submit") submit

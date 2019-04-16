@@ -18,13 +18,13 @@ block content
         td(class="headers", style="")
           x Priority
         td(class="headers", style="")
-          x Creator
+          x Options
       tbody
         
         each task, i in trackerlist
           tr
             td
-              a(href="#") #{task.name}
+              x #{task.name}
             td
               x #{task.time[0]}
             td
@@ -32,18 +32,25 @@ block content
             td
               x #{task.priority}
             td
-              x #{task.user}
+              form#form_add_task(name="edittask", method="post", action="/edittask")
+                input#input_user(type="hidden", placeholder="user", name="user", value=task._id)
+                button#submit_task(type="submit") edit
+              form#form_add_task(name="edittask", method="post", action="/deletetask")
+                input#input_user(type="hidden", placeholder="user", name="user", value=task._id)
+                button#submit_task(type="submit") delete
+
+          
       tfoot(class="w3-green")
         -var summ=0;
         -var sumh=0;
         -var sumt=0;
         -for (var i = 0; i < trackerlist.length; i++){
-          -sumt+=(trackerlist[i].time[0]*60 + trackerlist[i].time[1])
-          -summ+=(trackerlist[i].time[1])
+          -sumt+=(parseInt(trackerlist[i].time[0])*60 + parseInt(trackerlist[i].time[1]))
+          -summ+=(parseInt(trackerlist[i].time[1]))
           -if (summ>60){
             -summ-=60
             -sumh+=1
           -}
-          -sumh+=(trackerlist[i].time[0])
+          -sumh+=(parseInt(trackerlist[i].time[0]))
         -}
-        tr The total time to complete this: #{sumh} hours #{summ} minutes
+        x The total time to complete this: #{sumh} hours #{summ} minutes

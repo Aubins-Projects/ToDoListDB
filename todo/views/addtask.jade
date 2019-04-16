@@ -1,4 +1,7 @@
+extends layout
+
 block content
+
   h3= title
   form#form_add_task(name="addtask", method="post", action="/addtask")
     span Task Name
@@ -6,29 +9,34 @@ block content
     input#input_name(type="text", placeholder="task", name="task")
     br
     br
-    span priority
+    span Priority
     span &nbsp;
-    input#input_priority(type="text", placeholder="priority", name="priority")
+    input#input_priority(type="number", placeholder="priority", name="priority")
     br
     br
-    span City
+    span Hours
     span &nbsp;
-    input#input_city(type="text", placeholder="city", name="city")
+    input#input_hours(type="number", placeholder="hours", name="hours")
     br
     br
-    span State
+    span Minutes
     span &nbsp;
-    input#input_state(type="text", placeholder="state", name="state")
+    input#input_minutes(type="number", placeholder="minutes", name="minutes")
     br
     br
-    span Sex
+    span Subtask
     span &nbsp;
-    input#input_sex(type="text", placeholder="sex", name="sex")
+    input#input_subtask(type="checkbox", placeholder="subtask", name="subtask")
     br
     br
-    span GPA
+    span Due Date
     span &nbsp;
-    input#input_gpa(type="text", placeholder="gpa", name="gpa")
+    input#input_duedate(type="date", placeholder="MM/DD/YYYY", name="duedate")
+    br
+    br
+    span User
+    span &nbsp;
+    input#input_user(type="text", placeholder="user", name="user")
     br
     br
     button#submit_task(type="submit") submit
