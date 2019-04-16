@@ -1,2 +1,2 @@
 # ToDoListDB
-To do list tracker with a DB for persistenct
+To do list tracker with a DB for persistence
