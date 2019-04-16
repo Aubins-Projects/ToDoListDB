@@ -1,36 +1,49 @@
 extends layout
-link(href='../public/stylesheets/style.css', rel = 'stylesheet')
-link(href='../public/stylesheets/w3.css', rel = 'stylesheet' )
+
+
 
 block content
   h3.
     Tasks
-  ul
-  each tasks, i in trackerlist
-    li#student_list_item
-      a(href='#') #{tasks.name} will take #{tasks.time[0]} hours and #{tasks.time[1]} minutes
-
   div
-    table(class="w3-table-all w3-hoverable")
+    table(class="w3-table-all w3-hoverable w3-centered")
       thead
-        tr: th Tasks
+      tr(class="w3-blue")
+        td(class="headers")
+          x Task Name
+        td(class="headers")
+          x Hours
+        td(class="headers")
+          x Minutes
+        td(class="headers", style="")
+          x Priority
+        td(class="headers", style="")
+          x Creator
       tbody
-        tr
-          td(class="headers")
-            x Task Name
-          td(class="headers")
-            x Hours
-          td(class="headers")
-            x Minutes
-          td(class="headers", style="")
-            x Priority
+        
         each task, i in trackerlist
           tr
             td
-              x #{task.name}
+              a(href="#") #{task.name}
             td
               x #{task.time[0]}
             td
               x #{task.time[1]}
             td
               x #{task.priority}
+            td
+              x #{task.user}
+      tfoot(class="w3-green")
+        -var summ=0;
+        -var sumh=0;
+        -var sumt=0;
+        -for (var i = 0; i < trackerlist.length; i++){
+          -sumt+=(trackerlist[i].time[0]*60 + trackerlist[i].time[1])
+          -summ+=(trackerlist[i].time[1])
+          -if (summ>60){
+            -summ-=60
+            -sumh+=1
+          -}
+          -sumh+=(trackerlist[i].time[0])
+        -}
+        tr The total time to complete this: #{sumh} hours #{summ} minutes
