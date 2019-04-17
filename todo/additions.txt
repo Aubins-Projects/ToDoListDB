@@ -1,5 +1,4 @@
-Ability to sort by
-    the priority level
-    the due Date
-Enable Editing
-Enable Removing
+//TODO Ability to sort by the priority level
+//TODO Ability to sort by the due Date
+//TODO Enable Editing
+//TODO Enable Removing

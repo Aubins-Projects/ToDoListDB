@@ -3,6 +3,19 @@ var router = express.Router();
 var mongodb =require('mongodb');
 var username = "testman";
 
+
+function Comparator(a, b) {
+    if (parseInt(a.priority) < parseInt(b.priority)) return -1;
+    else if (parseInt(a.priority) > parseInt(b.priority)) return 1;
+    else return 0;
+}
+function ComparatorD(a, b) {
+    if (a.duedate < b.duedate) return -1;
+    else if (a.duedate > b.duedate) return 1;
+    else return 0;
+}
+
+
 /* GET home page.*/
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Task Manager' });
@@ -93,9 +106,75 @@ router.get('/thelist', function(req, res) {
 
 });
 
-router.get('/addtask', function(req, res){
-  res.render('addtask', {title: 'Add New Task'});
+router.get('/sortP', function(req, res) {
+  var MongoClient = mongodb.MongoClient;
+  var url = 'mongodb://localhost:27017/tracker';
+
+  MongoClient.connect(url, function(err, db){
+    if (err){
+      console.log("unable to connect to the server",err);
+    }
+    else {
+      console.log("Connection Established!");
+
+      var collection = db.collection('tasks');
+      collection.find({"user": username}).toArray(function(err, result){
+        if (err){
+          res.send(err);
+        } else if (result.length) {
+
+          const newlist = result.splice(0);
+          newlist.sort(Comparator);
+          //res.send(result);
+          res.render('trackerlist',{
+            "trackerlist":newlist
+          });
+        } else {
+          res.send('No Documents found');
+        }
+        db.close();
+      })
+    }
+
+  })
+
 });
+
+
+router.get('/sortD', function(req, res) {
+  var MongoClient = mongodb.MongoClient;
+  var url = 'mongodb://localhost:27017/tracker';
+
+  MongoClient.connect(url, function(err, db){
+    if (err){
+      console.log("unable to connect to the server",err);
+    }
+    else {
+      console.log("Connection Established!");
+
+      var collection = db.collection('tasks');
+      collection.find({"user": username}).toArray(function(err, result){
+        if (err){
+          res.send(err);
+        } else if (result.length) {
+
+          const newlist = result.splice(0);
+          newlist.sort(ComparatorD);
+          //res.send(result);
+          res.render('trackerlist',{
+            "trackerlist":newlist
+          });
+        } else {
+          res.send('No Documents found');
+        }
+        db.close();
+      })
+    }
+
+  })
+
+});
+
 
 
 
