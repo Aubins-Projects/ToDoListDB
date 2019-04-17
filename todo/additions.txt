@@ -1,4 +1,1 @@
-//TODO Ability to sort by the priority level
-//TODO Ability to sort by the due Date
-//TODO Enable Editing
-//TODO Enable Removing
+

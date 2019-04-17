@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongodb =require('mongodb');
 var username = "testman";
+var workhours = 480;
 
 
 function Comparator(a, b) {
@@ -96,6 +97,76 @@ router.get('/thelist', function(req, res) {
             "trackerlist":result
           });
         } else {
+          res.render('addtask', {title: 'Add New Task'});
+        }
+        db.close();
+      })
+    }
+
+  })
+
+});
+
+router.get('/prioritize', function(req, res) {
+  var MongoClient = mongodb.MongoClient;
+  var url = 'mongodb://localhost:27017/tracker';
+
+  MongoClient.connect(url, function(err, db){
+    if (err){
+      console.log("unable to connect to the server",err);
+    }
+    else {
+      console.log("Connection Established!");
+
+      var collection = db.collection('tasks');
+      collection.find({"user": username}).toArray(function(err, result){
+        if (err){
+          res.send(err);
+        } else if (result.length) {
+
+          const newlist = result.splice(0);
+          newlist.sort(Comparator);
+          var bonus_list=[];
+          var denied_list=[];
+          var allowed_list=[];
+          var totaltime=0;
+          var totalh=0;
+          var totalm=0;
+          var usabletime=workhours;
+          for (var i = 0; i < newlist.length; i++){
+            //console.log("This is the item im looking at: "+newlist[i]);
+            console.log("This is the time im looking at: "+newlist[i].time[0]+"hours "+newlist[i].time[1]+"minutes");
+            totaltime+=(parseInt(newlist[i].time[0])*60 + parseInt(newlist[i].time[1]))
+            if (totaltime<=workhours){
+              allowed_list.push(newlist[i]);
+              usabletime-=(parseInt(newlist[i].time[0])*60 + parseInt(newlist[i].time[1]));
+            }
+            else{
+              denied_list.push(newlist[i]);
+            }
+            totalm+=(parseInt(newlist[i].time[1]))
+            if (totalm>60){
+              totalm-=60
+              totalh+=1
+            }
+            totalh+=(parseInt(newlist[i].time[0]))
+
+          }
+          for (var i = 0; i < denied_list.length; i++){
+            var totalt=(parseInt(denied_list[i].time[0])*60 + parseInt(denied_list[i].time[1]))
+            if (totalt<(2*usabletime)){
+              bonus_list.push(denied_list[i])
+            }
+
+          }
+          console.log(usabletime);
+          //res.send(result);
+          res.render('sortP',{
+            "trackerlist": allowed_list,
+            "bonuslist": bonus_list,
+            "freeTime": usabletime
+          });
+        } else {
           res.send('No Documents found');
         }
         db.close();
@@ -125,9 +196,45 @@ router.get('/sortP', function(req, res) {
 
           const newlist = result.splice(0);
           newlist.sort(Comparator);
+          var bonus_list=[];
+          var denied_list=[];
+          var allowed_list=[];
+          var totaltime=0;
+          var totalh=0;
+          var totalm=0;
+          var usabletime=workhours;
+          for (var i = 0; i < newlist.length; i++){
+            //console.log("This is the item im looking at: "+newlist[i]);
+            console.log("This is the time im looking at: "+newlist[i].time[0]+"hours "+newlist[i].time[1]+"minutes");
+            totaltime+=(parseInt(newlist[i].time[0])*60 + parseInt(newlist[i].time[1]))
+            if (totaltime<=workhours){
+              allowed_list.push(newlist[i]);
+              usabletime-=(parseInt(newlist[i].time[0])*60 + parseInt(newlist[i].time[1]));
+            }
+            else{
+              denied_list.push(newlist[i]);
+            }
+            totalm+=(parseInt(newlist[i].time[1]))
+            if (totalm>60){
+              totalm-=60
+              totalh+=1
+            }
+            totalh+=(parseInt(newlist[i].time[0]))
+
+          }
+          for (var i = 0; i < denied_list.length; i++){
+            var totalt=(parseInt(denied_list[i].time[0])*60 + parseInt(denied_list[i].time[1]))
+            if (totalt<(2*usabletime)){
+              bonus_list.push(denied_list[i])
+            }
+
+          }
+          console.log(usabletime);
           //res.send(result);
-          res.render('trackerlist',{
-            "trackerlist":newlist
+          res.render('sortP',{
+            "trackerlist": allowed_list,
+            "bonuslist": bonus_list,
+            "freeTime": usabletime
           });
         } else {
           res.send('No Documents found');

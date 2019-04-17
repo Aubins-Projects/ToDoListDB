@@ -3,8 +3,28 @@ extends layout
 
 
 block content
-  form#form_add_task(name="addtask", method="get", action="/")
-    button#submit_task(type="submit") Change User
+  div
+    table
+      thead
+        tr
+          td
+            form#form_add_task(name="addtask", method="get", action="/")
+              button#submit_task(type="submit") Change User
+          td
+            form#form_add_task(name="addtask", method="get", action="/addtask")
+              button#submit_task(type="submit") Add New Task
+          td
+            form#form_add_task(name="sortD", method="get", action="/sortD")
+              button#submit_task(type="submit") Sort List by Date
+          td  
+            form#form_add_task(name="sortP", method="get", action="/sortP")
+              button#submit_task(type="submit") Sort List by Priority
+          td  
+            form#form_add_task(name="all", method="get", action="/thelist")
+              button#submit_task(type="submit") Show All Tasks
+          td
+            form#form_add_task(name="prioritymaker", method="get", action="/prioritize")
+              button#submit_task(type="submit") Prioritze the List
   h3.
     Tasks
   div
@@ -60,9 +80,3 @@ block content
           -sumh+=(parseInt(trackerlist[i].time[0]))
         -}
         x The total time to complete this: #{sumh} hours #{summ} minutes
-  form#form_add_task(name="addtask", method="get", action="/addtask")
-    button#submit_task(type="submit") Add New Task
-  form#form_add_task(name="sortP", method="get", action="/sortP")
-    button#submit_task(type="submit") Sort Task
-  form#form_add_task(name="sortP", method="get", action="/sortD")
-    button#submit_task(type="submit") Sort Date
