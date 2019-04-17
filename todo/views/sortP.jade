@@ -77,6 +77,9 @@ block content
           -sumh+=(parseInt(trackerlist[i].time[0]))
         -}
         x The total time to complete this: #{sumh} hours #{summ} minutes
+    br
+    br
+    h3 The total free time you have is: #{freeTime} minutes
     div
       table(class="w3-table-all w3-hoverable w3-centered")
         thead
@@ -114,5 +117,46 @@ block content
                 form#form_add_task(name="edittask", method="post", action="/deletetask")
                   input#input_user(type="hidden", placeholder="user", name="user", value=task._id)
                   button#submit_task(type="submit") delete    
-        tfoot(class="w3-green")
-          x The total free time you have is: #{freeTime} minutes
+          
+      br
+      br
+      h3(style="w3-red") These tasks cannot be completed
+      div
+        table(class="w3-table-all w3-hoverable w3-centered")
+          thead
+          tr(class="w3-red")
+            td(class="headers")
+              x Task Name
+            td(class="headers")
+              x Hours
+            td(class="headers")
+              x Minutes
+            td(class="headers", style="")
+              x Priority
+            td(class="headers", style="")
+              x Due Date
+            td(class="headers", style="")
+              x Options
+          tbody
+            
+            each task, i in deniedlist
+              tr
+                td
+                  x #{task.name}
+                td
+                  x #{task.time[0]}
+                td
+                  x #{task.time[1]}
+                td
+                  x #{task.priority}
+                td
+                  x #{task.duedate}
+                td
+                  form#form_add_task(name="edittask", method="post", action="/edittask")
+                    input#input_user(type="hidden", placeholder="user", name="user", value=task._id)
+                    button#submit_task(type="submit") edit
+                  form#form_add_task(name="edittask", method="post", action="/deletetask")
+                    input#input_user(type="hidden", placeholder="user", name="user", value=task._id)
+                    button#submit_task(type="submit") delete    
+          
+            

@@ -19,7 +19,11 @@ function ComparatorD(a, b) {
 
 /* GET home page.*/
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Task Manager' });
+  res.render('index', {
+    title: 'Task Manager',
+    user:username,
+    time:workhours
+   });
 });
 
 
@@ -35,6 +39,7 @@ router.post('/verifyuser', function(req, res) {
       console.log("Connection Established!");
 
       username = req.body.user;
+      workhours= req.body.workhours;
       res.redirect("thelist");
 
     }
@@ -164,6 +169,7 @@ router.get('/prioritize', function(req, res) {
           res.render('sortP',{
             "trackerlist": allowed_list,
             "bonuslist": bonus_list,
+            "deniedlist":denied_list,
             "freeTime": usabletime
           });
         } else {
@@ -231,8 +237,8 @@ router.get('/sortP', function(req, res) {
           }
           console.log(usabletime);
           //res.send(result);
-          res.render('sortP',{
-            "trackerlist": allowed_list,
+          res.render('trackerlist',{
+            "trackerlist": newlist,
             "bonuslist": bonus_list,
             "freeTime": usabletime
           });

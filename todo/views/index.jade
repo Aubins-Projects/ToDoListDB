@@ -5,5 +5,10 @@ block content
   p Welcome to #{title}
   
   form#form_add_task(name="verifyuser", method="post", action="/verifyuser")
-    input#input_user(type="text", placeholder="user", name="user")
+    span Enter Username:  
+    input#input_user(type="text", placeholder="user", value=user name="user")
+    br
+    br
+    span Enter Work Time in minutes (8 hours is 480)
+    input#input_user(type="number", placeholder=time, value=time, name="workhours")
     button#submit_task(type="submit") submit
