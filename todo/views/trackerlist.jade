@@ -25,8 +25,11 @@ block content
           td
             form#form_add_task(name="prioritymaker", method="get", action="/prioritize")
               button#submit_task(type="submit") Prioritze the List
+          td
+            form#form_add_task(name="complete", method="get", action="/showcomplete")
+              button#submit_task(type="submit") Show Complete
   h3.
-    Tasks
+    #{title}
   div
     table(class="w3-table-all w3-hoverable w3-centered")
       thead
@@ -64,6 +67,7 @@ block content
               form#form_add_task(name="edittask", method="post", action="/deletetask")
                 input#input_user(type="hidden", placeholder="user", name="user", value=task._id)
                 button#submit_task(type="submit") delete
+
 
           
       tfoot(class="w3-green")

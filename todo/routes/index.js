@@ -93,13 +93,14 @@ router.get('/thelist', function(req, res) {
       console.log("Connection Established!");
 
       var collection = db.collection('tasks');
-      collection.find({"user": username}).toArray(function(err, result){
+      collection.find({"user": username, "complete":false}).toArray(function(err, result){
         if (err){
           res.send(err);
         } else if (result.length) {
           //res.send(result);
           res.render('trackerlist',{
-            "trackerlist":result
+            "trackerlist":result,
+            "title": "Tasks"
           });
         } else {
           res.render('addtask', {title: 'Add New Task'});
@@ -124,7 +125,7 @@ router.get('/prioritize', function(req, res) {
       console.log("Connection Established!");
 
       var collection = db.collection('tasks');
-      collection.find({"user": username}).toArray(function(err, result){
+      collection.find({"user": username, "complete":false}).toArray(function(err, result){
         if (err){
           res.send(err);
         } else if (result.length) {
@@ -195,7 +196,7 @@ router.get('/sortP', function(req, res) {
       console.log("Connection Established!");
 
       var collection = db.collection('tasks');
-      collection.find({"user": username}).toArray(function(err, result){
+      collection.find({"user": username, "complete": false}).toArray(function(err, result){
         if (err){
           res.send(err);
         } else if (result.length) {
@@ -240,7 +241,8 @@ router.get('/sortP', function(req, res) {
           res.render('trackerlist',{
             "trackerlist": newlist,
             "bonuslist": bonus_list,
-            "freeTime": usabletime
+            "freeTime": usabletime,
+            "title":"Tasks"
           });
         } else {
           res.send('No Documents found');
@@ -266,7 +268,7 @@ router.get('/sortD', function(req, res) {
       console.log("Connection Established!");
 
       var collection = db.collection('tasks');
-      collection.find({"user": username}).toArray(function(err, result){
+      collection.find({"user": username, "complete": false}).toArray(function(err, result){
         if (err){
           res.send(err);
         } else if (result.length) {
@@ -275,7 +277,43 @@ router.get('/sortD', function(req, res) {
           newlist.sort(ComparatorD);
           //res.send(result);
           res.render('trackerlist',{
-            "trackerlist":newlist
+            "trackerlist":newlist,
+            "title":"Tasks"
+          });
+        } else {
+          res.send('No Documents found');
+        }
+        db.close();
+      })
+    }
+
+  })
+
+});
+
+router.get('/showcomplete', function(req, res) {
+  var MongoClient = mongodb.MongoClient;
+  var url = 'mongodb://localhost:27017/tracker';
+
+  MongoClient.connect(url, function(err, db){
+    if (err){
+      console.log("unable to connect to the server",err);
+    }
+    else {
+      console.log("Connection Established!");
+
+      var collection = db.collection('tasks');
+      collection.find({"user": username, "complete": true}).toArray(function(err, result){
+        if (err){
+          res.send(err);
+        } else if (result.length) {
+
+          const newlist = result.splice(0);
+          newlist.sort(ComparatorD);
+          //res.send(result);
+          res.render('trackerlist',{
+            "trackerlist":newlist,
+            "title":"Completed Tasks"
           });
         } else {
           res.send('No Documents found');
@@ -295,6 +333,53 @@ router.get('/addtask', function(req, res){
   res.render('addtask', {title: 'Add New Task'});
 });
 
+router.post('/changetask', function(req, res){
+
+    // Get a Mongo client to work with the Mongo server
+    var MongoClient = mongodb.MongoClient;
+
+    // Define where the MongoDB server is
+  var url = 'mongodb://localhost:27017/tracker';
+
+    // Connect to the server
+    MongoClient.connect(url, function(err, db){
+      if (err) {
+        console.log('Unable to connect to the Server:', err);
+      } else {
+        console.log('Connected to Server');
+        var tempbool=false;
+        // Get the documents collection
+        var collection = db.collection('tasks');
+        if (req.body.complete == "on"){
+        console.log("found it to be true");
+        var tempbool=true;
+      }
+      var today =new Date();
+
+        var task1 = {name: req.body.task, time: [parseInt(req.body.hours),parseInt(req.body.minutes)],
+          duedate: req.body.duedate, complete: tempbool, priority: req.body.priority, subtask: req.body.subtask,
+          user: req.body.user};
+        var myQuery = {_id:mongodb.ObjectId(req.body._id)};
+
+
+
+        collection.updateOne(myQuery,task1, function (err, result){
+          if (err) {
+            console.log(err);
+          } else {
+
+            // Redirect to the updated student list
+            res.redirect("thelist");
+          }
+
+          // Close the database
+          db.close();
+        });
+
+      }
+    });
+
+  });
 
 
 
@@ -373,7 +458,6 @@ router.post('/changetask', function(req, res){
 
 
 
-
   router.post('/addtask', function(req, res){
 
       // Get a Mongo client to work with the Mongo server
@@ -395,7 +479,7 @@ router.post('/changetask', function(req, res){
 
           // Get the student data passed from the form
           var task1 = {name: req.body.task, time: [parseInt(req.body.hours),parseInt(req.body.minutes)],
-            duedate: req.body.duedate, complete: false, priority: req.body.priority, subtask: req.body.subtask,
+            duedate: req.body.duedate, complete: false, priority: req.body.priority, subtask: false,
             user: username};
 
           // Insert the student data into the database
