@@ -196,14 +196,15 @@ router.post('/changetask', function(req, res){
           console.log('Unable to connect to the Server:', err);
         } else {
           console.log('Connected to Server');
-
+          console.log("The username is below");
+          console.log(username);
           // Get the documents collection
           var collection = db.collection('tasks');
 
           // Get the student data passed from the form
           var task1 = {name: req.body.task, time: [parseInt(req.body.hours),parseInt(req.body.minutes)],
             duedate: req.body.duedate, complete: false, priority: req.body.priority, subtask: req.body.subtask,
-            user: req.body.user};
+            user: username};
 
           // Insert the student data into the database
           collection.insert([task1], function (err, result){

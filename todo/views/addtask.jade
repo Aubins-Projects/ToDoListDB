@@ -32,11 +32,10 @@ block content
     span Due Date
     span &nbsp;
     input#input_duedate(type="date", placeholder="MM/DD/YYYY", name="duedate")
-    br
-    br
-    span User
-    span &nbsp;
-    input#input_user(type="text", placeholder="user", name="user")
+
     br
     br
     button#submit_task(type="submit") submit
+    
+  form#form_add_task(name="addtask", method="get", action="/thelist")
+    button#submit_task(type="submit") Go Back

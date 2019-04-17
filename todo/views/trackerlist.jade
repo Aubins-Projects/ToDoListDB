@@ -3,6 +3,8 @@ extends layout
 
 
 block content
+  form#form_add_task(name="addtask", method="get", action="/")
+    button#submit_task(type="submit") Change User
   h3.
     Tasks
   div
@@ -54,3 +56,5 @@ block content
           -sumh+=(parseInt(trackerlist[i].time[0]))
         -}
         x The total time to complete this: #{sumh} hours #{summ} minutes
+  form#form_add_task(name="addtask", method="get", action="/addtask")
+    button#submit_task(type="submit") Add New Task
