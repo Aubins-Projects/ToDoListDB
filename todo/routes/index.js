@@ -3,6 +3,7 @@ var router = express.Router();
 var mongodb =require('mongodb');
 var username = "testman";
 var workhours = 480;
+var buffertime = 25;
 
 
 function Comparator(a, b) {
@@ -151,7 +152,7 @@ router.get('/prioritize', function(req, res) {
               denied_list.push(newlist[i]);
             }
             totalm+=(parseInt(newlist[i].time[1]))
-            if (totalm>60){
+            if (totalm>59){
               totalm-=60
               totalh+=1
             }
@@ -160,7 +161,7 @@ router.get('/prioritize', function(req, res) {
           }
           for (var i = 0; i < denied_list.length; i++){
             var totalt=(parseInt(denied_list[i].time[0])*60 + parseInt(denied_list[i].time[1]))
-            if (totalt<(2*usabletime)){
+            if (totalt<(buffertime+usabletime)){
               bonus_list.push(denied_list[i])
             }
 
@@ -222,7 +223,7 @@ router.get('/sortP', function(req, res) {
               denied_list.push(newlist[i]);
             }
             totalm+=(parseInt(newlist[i].time[1]))
-            if (totalm>60){
+            if (totalm>59){
               totalm-=60
               totalh+=1
             }
