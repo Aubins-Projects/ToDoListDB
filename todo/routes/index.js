@@ -13,13 +13,37 @@ localStorage.buffertime = 0;
 localStorage.endtimelist=[16,1];
 localStorage.miscKill=0;
 
+function updateDate(list){
+  var today= new Date();
+  var currentDay=today.getDate();
+  var currentYear=today.getYear()+1900;
+  var currentMonth=today.getMonth()+1;
+  if(currentMonth<10){
+    currentMonth="0"+currentMonth;
+  }
+  if(currentDay<10){
+    currentDay="0"+currentDay;
+  }
+  var current_string=currentYear+"-"+currentMonth+"-"+currentDay;
+  for(var i=0;i<list.length;i++){
+  if (list[i].subtask=="on"){
+    list[i].duedate=current_string;
+  }
+}
+  return list;
+}
+
 function Comparator(a, b) {
     if (parseInt(a.priority) < parseInt(b.priority)) return -1;
     else if (parseInt(a.priority) > parseInt(b.priority)) return 1;
     else return 0;
 }
 function ComparatorD(a, b) {
+    console.log(a.duedate);
+    console.log(b.duedate);
     if (a.duedate < b.duedate) return -1;
+
+
     else if (a.duedate > b.duedate) return 1;
     else return 0;
 }
@@ -148,6 +172,7 @@ router.get('/thelist', function(req, res) {
           res.send(err);
         } else if (result.length) {
           //res.send(result);
+          result=updateDate(result);
           res.render('trackerlist',{
             "trackerlist":result,
             "title": "Tasks"
@@ -179,7 +204,7 @@ router.get('/prioritize', function(req, res) {
         if (err){
           res.send(err);
         } else if (result.length) {
-
+          result=updateDate(result);
           const newlist = result.splice(0);
           newlist.sort(Comparator);
           var bonus_list=[];
@@ -209,6 +234,7 @@ router.get('/prioritize', function(req, res) {
             totalh+=(parseInt(newlist[i].time[0]))
 
           }
+          denied_list.sort(ComparatorD);
           for (var i = 0; i < denied_list.length; i++){
             var totalt=(parseInt(denied_list[i].time[0])*60 + parseInt(denied_list[i].time[1]))
             if (totalt<(localStorage.buffertime+usabletime)){
@@ -251,7 +277,7 @@ router.get('/sortP', function(req, res) {
         if (err){
           res.send(err);
         } else if (result.length) {
-
+          result=updateDate(result);
           const newlist = result.splice(0);
           newlist.sort(Comparator);
           var bonus_list=[];
@@ -280,6 +306,7 @@ router.get('/sortP', function(req, res) {
             totalh+=(parseInt(newlist[i].time[0]))
 
           }
+
           for (var i = 0; i < denied_list.length; i++){
             var totalt=(parseInt(denied_list[i].time[0])*60 + parseInt(denied_list[i].time[1]))
             if (totalt<(2*usabletime)){
@@ -323,7 +350,7 @@ router.get('/sortD', function(req, res) {
         if (err){
           res.send(err);
         } else if (result.length) {
-
+          result=updateDate(result);
           const newlist = result.splice(0);
           newlist.sort(ComparatorD);
           //res.send(result);
@@ -358,7 +385,7 @@ router.get('/showcomplete', function(req, res) {
         if (err){
           res.send(err);
         } else if (result.length) {
-
+          result=updateDate(result);
           const newlist = result.splice(0);
           newlist.sort(ComparatorD);
           //res.send(result);
@@ -530,7 +557,7 @@ router.post('/changetask', function(req, res){
 
           // Get the student data passed from the form
           var task1 = {name: req.body.task, time: [parseInt(req.body.hours),parseInt(req.body.minutes)],
-            duedate: req.body.duedate, complete: false, priority: req.body.priority, subtask: false,
+            duedate: req.body.duedate, complete: false, priority: req.body.priority, subtask: req.body.subtask,
             user: localStorage.username};
 
           // Insert the student data into the database
