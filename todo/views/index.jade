@@ -9,6 +9,10 @@ block content
     input#input_user(type="text", placeholder="user", value="user" name="user")
     br
     br
-    span Enter Work Time in minutes (8 hours is 480)
-    input#input_user(type="number", placeholder=time, value=time, name="workhours")
+    span Enter Start of Day:(ex: 08:00)
+    input#input_user(type="text", placeholder=time, value="08:00", name="starttime")
+    span Enter End of Day:(ex: 16:00)
+    input#input_user(type="text", placeholder=time, value="16:00", name="endtime")
+    span Enter Minutes for misc:(ex: 90 for lunch)
+    input#input_user(type="number", placeholder=time, value=90, name="misctime")
     button#submit_task(type="submit") submit
